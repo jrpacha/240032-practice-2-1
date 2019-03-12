@@ -1,8 +1,8 @@
-# practiquesMatlab-240032_25-02-2019
+# practiquesMatlab-240032_11-03-2019
 
-Matlab session Monday 25-02-2019
+Matlab session Monday 11-03-2019
 
-P1.3 - Quadrilateral Shape Functions. Session's source code. 
+P2.1 - 1D structural linear elements. Session's source code. 
 
 You can find the session's guide ---together with other extra material files---at Toni Susin's 'Numerical Factory', 
 
