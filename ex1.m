@@ -69,6 +69,3 @@ end
 
 fprintf("%12s%14s%14s\n",'displ.','force','stress')
 fprintf('%14.4e%14.4e%14.4e\n',[displ,force,stress]')
-
-
-
