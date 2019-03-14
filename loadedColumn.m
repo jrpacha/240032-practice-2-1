@@ -49,8 +49,10 @@ format short e
 u
 
 %Post-process
+%(I) Reaction Forces
 reactForces = K*u-Q
 
+%(II) Final lenght, stress and force at the elements
 displ=zeros(numElem,1);
 stress=zeros(numElem,1);
 force=zeros(numElem,1);
@@ -62,5 +64,15 @@ for e=1:numElem
     force(e) = A(e)*stress(e);
 end
 
-fprintf("%12s%14s%14s\n",'displ.','force','stress')
-fprintf('%14.4e%14.4e%14.4e\n',[displ,force,stress]')
+disp(['displ. ','force ','stress:'])
+[displ,force,stress]
+
+%Fancy output (not in exams!!!)
+fprintf('\n\t\tFancy output\n')
+fprintf('(Don''t waste your time with this in exams!)\n')
+fprintf('\n%6s%8s%11s%15s\n','#Nod.','Y','U','Reac.F')
+fprintf('%4d%14.4e%12.4e%12.4e\n',...
+    [[1:numNod]',nodes,u,reactForces]')
+fprintf("\n%6s%11s%10s%12s\n",'#Elem.','displ.','force','stress')
+fprintf('%4d%14.4e%12.4e%12.4e\n',...
+    [[1:numElem]',displ,force,stress]')
