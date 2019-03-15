@@ -29,7 +29,7 @@ Q=zeros(numNod,1);
 
 K=zeros(numNod);
 for e=1:numElem
-    Ke=localStiffnessMatrix(E,A,nodes,elem,e);
+    Ke=localStiffnessMatrix1D(E,A,nodes,elem,e);
     rows=[elem(e,1),elem(e,2)];
     files=rows;
     K(files,rows)=K(files,rows)+Ke;
