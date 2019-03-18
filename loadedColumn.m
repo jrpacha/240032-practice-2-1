@@ -1,10 +1,10 @@
 clearvars
 close all
 
-h=4.5;      %m
-P=11.0e4;   %N
-F=3.0e5;    %N
-Y=2.0e11;   %N/m^2
+h=4.5;         %m
+P=11.0e4;      %N
+F=3.0e5;       %N
+Y=2.0e11;      %N/m^2
 Area=250.0e-4; %m^2
 
 nodes=linspace(0,4*h,5);
@@ -73,6 +73,6 @@ fprintf('(Don''t waste your time with this in exams!)\n')
 fprintf('\n%6s%8s%11s%15s\n','#Nod.','Y','U','Reac.F')
 fprintf('%4d%14.4e%12.4e%12.4e\n',...
     [[1:numNod]',nodes,u,reactForces]')
-fprintf("\n%6s%11s%10s%12s\n",'#Elem.','displ.','force','stress')
+fprintf("\n%6s%12s%10s%12s\n",'#Elem.','elongation','force','stress')
 fprintf('%4d%14.4e%12.4e%12.4e\n',...
     [[1:numElem]',displ,force,stress]')
