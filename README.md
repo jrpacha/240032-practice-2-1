@@ -17,3 +17,5 @@ If you find any mistakes (or have any suggestions), please report them to
 juan.ramon.pacha@upc.edu 
 
 Many thanks,
+
+J.R.
