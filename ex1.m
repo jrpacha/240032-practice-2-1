@@ -5,9 +5,10 @@ h=2.25;        %m
 P=11.0e4;      %N
 F=3.0e5;       %N
 Y=2.0e11;      %N/m^2
-Area=250.0e-4; %m^2
+Area=2.50e-2; %m^2
 
-nodes=linspace(0,8*h,9);
+%nodes=linspace(0,8*h,9);
+nodes=0:h:8*h;
 nodes=nodes';
 elem=[1,2;
       2,3;
