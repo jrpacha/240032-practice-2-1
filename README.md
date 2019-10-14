@@ -1,6 +1,6 @@
 # matlabSession-240032_11-03-2019
 
-## Matlab session Monday 11-03-2019
+## Matlab session Tuesday 15-10-2019
 
 ### P2.1 - 1D structural linear elements. Session's source code. 
 
