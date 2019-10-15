@@ -1,13 +1,14 @@
 clearvars
 close all
 
-h=4.5;         %m
-P=11.0e4;      %N
-F=3.0e5;       %N
-Y=2.0e11;      %N/m^2
-Area=2.50e-2;  %m^2
+h=4.5;         %length of an element (in m)
+P=11.0e4;      %point forces at the nodes, downwards (in N)
+F=3.0e5;       %point force at the topmost node, downwads (in N)
+Y=2.0e11;      %Young Modulus of the material (in N/m^2)
+Area=2.5e-2;   %Setcion area of the column (in m^2)
 
-nodes=linspace(0,4*h,5);
+%Geometry: nodes & elements
+nodes=linspace(0,4*h,5); %nodes=0:h:18;
 nodes=nodes';
 elem=[1,2;
       2,3;
@@ -17,15 +18,15 @@ elem=[1,2;
 numNod=size(nodes,1);
 numElem=size(elem,1);
 
+%Real constants: materials and section area
 E=Y*ones(1,numElem);
 A=Area*ones(1,numElem);
 
-A(2)=125.0e-4; %m^2
-E(2)=5.0e9;    %N/m^2
+%Change sect. area and young modulus of elem 2
+A(2)=125.0e-4; %in m^2
+E(2)=5.0e9;    %in N/m^2
 
-u=zeros(numNod,1);
-Q=zeros(numNod,1);
-
+%Assembly
 K=zeros(numNod);
 for e=1:numElem
     Ke=localStiffnessMatrix1D(E,A,nodes,elem,e);
@@ -34,26 +35,30 @@ for e=1:numElem
     K(files,rows)=K(files,rows)+Ke;
 end
 
-fixedNod=1;
-freeNod=setdiff(1:numNod,fixedNod);
-
 %Natural B.C.
-Q(freeNod)=-2*P;
+Q=zeros(numNod,1);
+Q(2:numNod)=-2*P;
 Q(numNod)=-F;
 
 %Essential B.C
-u(fixedNod)=0.0;
+fixedNodes=1;
+freeNodes=setdiff(1:numNod,fixedNodes);
+u=zeros(numNod,1);
+u(fixedNodes)=0.0;
 
-Qm = Q(freeNod) - K(freeNod,fixedNod)*u(fixedNod);
-Km = K(freeNod,freeNod);
+%Set the reduced system
+Qm = Q(freeNodes) - K(freeNodes,fixedNodes)*u(fixedNodes);
+Km = K(freeNodes,freeNodes);
 um = Km\Qm;
-u(freeNod)=um;
+u(freeNodes)=um;
 format short e
 u
 
 %Post-process
+%(I) Reaction Forces
 reactForces = K*u-Q
 
+%(II) Final lenght, stress and force at the elements
 displ=zeros(numElem,1);
 stress=zeros(numElem,1);
 force=zeros(numElem,1);
@@ -65,12 +70,15 @@ for e=1:numElem
     force(e) = A(e)*stress(e);
 end
 
-%Fancy output (not in exams!!!)
-fprintf('\n\t\tFancy output\n')
-fprintf('(Don''t waste your time with this in exams!)\n')
-fprintf('\n%6s%8s%11s%15s\n','#Nod.','Y','U','Reac.F')
-fprintf('%4d%14.4e%12.4e%12.4e\n',...
+disp(['displ. ','force ','stress:'])
+[displ,force,stress]
+
+%Fancy output (not for exams!!!)
+fprintf('\nFancy output: not for exams!!!\n')
+fprintf('\n%6s%8s%13s%17s\n','Nod.','Y','U','Reac.F')
+fprintf('%4d%14.4e%14.4e%14.4e\n',...
     [[1:numNod]',nodes,u,reactForces]')
-fprintf("\n%6s%12s%10s%12s\n",'#Elem.','elongation','force','stress')
-fprintf('%4d%14.4e%12.4e%12.4e\n',...
+fprintf("\n%6s%12s%11s%15s\n",...
+    'Elem.','elongation','force','stress')
+fprintf('%4d%14.4e%14.4e%14.4e\n',...
     [[1:numElem]',displ,force,stress]')
