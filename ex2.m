@@ -1,18 +1,19 @@
 clearvars
 close all
 
-h=4.5;         %length of an element (in m)
+numDiv=4;      %number of divisions
+L=18.0         %length of the column (in m)         
 P=11.0e4;      %point forces at the nodes, downwards (in N)
 F=3.0e5;       %point force at the topmost node, downwads (in N)
 Y=2.0e11;      %Young Modulus of the material (in N/m^2)
 Area=2.5e-2;   %Setcion area of the column (in m^2)
 
-numDiv=4;      %number of divisions (elements)
-
 %Geometry: nodes & elements
-nodes=linspace(0,numDiv*h,numDiv+1); %nodes=0:h:numDiv*h;
+h=L/numDiv;
+nodes=0:h:L;
 nodes=nodes(:);
 
+elem=zeros(numDiv,2);
 for i=1:numDiv
     elem(i,:)=[i,i+1];
 end
@@ -33,8 +34,8 @@ K=zeros(numNod);
 for e=1:numElem
     Ke=localStiffnessMatrix1D(E,A,nodes,elem,e);
     rows=[elem(e,1),elem(e,2)];
-    files=rows;
-    K(files,rows)=K(files,rows)+Ke;
+    cols=rows;
+    K(rows,cols)=K(rows,cols)+Ke;
 end
 
 %Natural B.C.
@@ -65,10 +66,13 @@ displ=zeros(numElem,1);
 stress=zeros(numElem,1);
 force=zeros(numElem,1);
 
+disp(['displ., ','force, ','stress:'])
+[displ,force,stress]
+
 for e=1:numElem
     displ(e) = u(elem(e,2))-u(elem(e,1));
-    L = abs(nodes(elem(e,2))-nodes(elem(e,1)));
-    stress(e) = E(e)*displ(e)/L;
+    L0 = abs(nodes(elem(e,2))-nodes(elem(e,1)));
+    stress(e) = E(e)*displ(e)/L0;
     force(e) = A(e)*stress(e);
 end
 
