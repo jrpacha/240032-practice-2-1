@@ -7,13 +7,15 @@ F=3.0e5;       %point force at the topmost node, downwads (in N)
 Y=2.0e11;      %Young Modulus of the material (in N/m^2)
 Area=2.5e-2;   %Setcion area of the column (in m^2)
 
+numDiv=4;      %number of divisions (elements)
+
 %Geometry: nodes & elements
-nodes=linspace(0,4*h,5); %nodes=0:h:18;
-nodes=nodes';
-elem=[1,2;
-      2,3;
-      3,4;
-      4,5];
+nodes=linspace(0,numDiv*h,numDiv+1); %nodes=0:h:numDiv*h;
+nodes=nodes(:);
+
+for i=1:numDiv
+    elem(i,:)=[i,i+1];
+end
 
 numNod=size(nodes,1);
 numElem=size(elem,1);
@@ -77,8 +79,8 @@ disp(['displ. ','force ','stress:'])
 fprintf('\nFancy output: not for exams!!!\n')
 fprintf('\n%6s%8s%13s%17s\n','Nod.','Y','U','Reac.F')
 fprintf('%4d%14.4e%14.4e%14.4e\n',...
-    [[1:numNod]',nodes,u,reactForces]')
+    [1:numNod;nodes';u';reactForces'])
 fprintf("\n%6s%12s%11s%15s\n",...
     'Elem.','elongation','force','stress')
 fprintf('%4d%14.4e%14.4e%14.4e\n',...
-    [[1:numElem]',displ,force,stress]')
+    [1:numElem;displ';force';stress'])
