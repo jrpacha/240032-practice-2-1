@@ -34,7 +34,7 @@ K=zeros(numNod);
 
 Ke = a1*[1, -1;-1,1]/h + a0*h*[2 1; 1 2]/6.0; %This Ke is the same for 
                                               %for all the elements, since
-                                              %coeficcients are constants.
+                                              %coefficients are constants.
                                               %See T3-MN-FEM2D.pdf,page 56
 
 for e=1:numElem
