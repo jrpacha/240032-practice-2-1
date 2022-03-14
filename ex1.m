@@ -66,8 +66,8 @@ force=zeros(numElem,1);
 
 for e=1:numElem
     displ(e) = u(elem(e,2))-u(elem(e,1));
-    L0 = abs(nodes(elem(e,2))-nodes(elem(e,1)));
-    stress(e) = E(e)*displ(e)/L0;
+    L0 = abs(nodes(elem(e,2))-nodes(elem(e,1))); %Actually L0=h, and is the 
+    stress(e) = E(e)*displ(e)/L0;                %same for all the elements
     force(e) = A(e)*stress(e);
 end
 

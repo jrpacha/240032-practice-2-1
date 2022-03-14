@@ -47,7 +47,7 @@ end
 u = zeros(numNod,1);
 
 %Natural B.C.
-Q(numNod) = dudx2; 
+Q(numNod) = a1*dudx2; 
 
 %Essential B.C
 fixedNodes=1;
