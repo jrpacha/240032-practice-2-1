@@ -7,7 +7,7 @@ close all
 %            u'(0) = du0,
 %             u(L) = uL
 %
-% By the FEM, taking N=100 linear elements, compute the nodal solutions 
+% by the FEM, taking N=100 linear elements, compute the nodal solutions 
 % u(k), k=1,2,...,N+1 taking L=50, du0=4.94 and uL= 1.0, and give its 
 % maximum value, max{u(k),k=1,2,...,N+1}.
 %
@@ -24,6 +24,19 @@ a=1.0;         %f(x)=a*x;
 
 du0 = 4.94;    %value of u' at x = 0. Natural BC u'(0) = 4.94, 
 uL = 1.0;      %Essential B.C. u(L)=1.0;
+
+%Exercise:
+%(a) Show that for a1(x)=alpha*x+beta, and linar elements (2 nodes), the
+%K1e term of the stiffness matrix of the elemenet e is given by 
+%     Ke1 = alpha*(x1e+x2e)*[1,-1;-1,1]/(2*he) + beta*[1,-1;-1,1]/he,
+%where x1e and x2e are the positions of the 1st and the 2nd node of the
+%element, respectively, and he is its length.
+%
+%(b) Show that, for f(x)=a*x+b, and linear elements (2 nodes) the load 
+%vector of element e is given by
+%    Fe = a*he*[2*x1e+x2e;x1e+2*x2e]/6 + b*he*[1;1]/2,
+%where x1e and x2e are the positions of the 1st and the 2nd node of the
+%element, respectively, and he is its length.
 
 %-------------------------------------------------------------------------
 %Geometry: nodes & elements
@@ -53,12 +66,14 @@ for e=1:numElem
     F(rows)=F(rows)+Fe;
 end
 
-%Natural B.C.
-Q(1) = -(alpha*nodes(1)+beta)*du0; %The other are Q(2)=...=Q(numNod-1)=0 
-
-%Essential B.C
+%BC
 fixedNods=numNodes;
 freeNods=setdiff(1:numNodes,fixedNods);
+
+%Natural B.C.
+Q(1) = -(alpha*nodes(1)+beta)*du0; %The other are Q(2)=...=Q(numNod-1)=0
+
+%Essential B.C
 u(fixedNods)=uL;
 
 %Set the reduced system
