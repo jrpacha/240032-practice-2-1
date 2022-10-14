@@ -3,7 +3,7 @@
 ### P2.1 - 1D structural linear elements. Session's source code. 
 
 You can find the session's guide ---together with other extra material files---,
-at Toni Susin's 'Numerical Factory', 
+at professor Toni Susin's 'Numerical Factory', 
 
 https://numfactory.upc.edu/numfactory/subjects/?subject=FEM&version=etseib&lang=en&section=2&subsection=P
 
