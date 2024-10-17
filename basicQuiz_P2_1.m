@@ -110,4 +110,5 @@ interpU = interp1(nodes, u, 1);
 %interpU
 
 %Fancy outptut: don't do this at exams.
-fprintf("Solution: Interpolated value of u at x = 1: %.8e\n",interpU)
+fprintf("Solution: interpolated value of u at x = %.2f: %.8e\n",...
+    xp,interpU)
