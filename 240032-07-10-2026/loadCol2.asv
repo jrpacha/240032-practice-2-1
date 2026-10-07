@@ -1,0 +1,77 @@
+clearvars
+close all
+
+H = 3.0; %m
+h = 1.0; %m (the same for all the elements)
+P = 2.0e3; %N
+E = 28.0e9; %N / m^2
+w = 25e3;   %N / m^3
+R = 24e3;  %N / m^2
+
+%A = @(x) 3.0/4.0 - x/6;
+
+alpha = -E/6; beta = 3.0*E/4;
+a = w / 6; b = -3*w / 4;
+
+nodes = (0:h:H)';
+elem = [1, 2;
+    2, 3;
+    3, 4];
+
+numNods = size(nodes,1);
+numElem = size(elem, 1);
+
+K = zeros(numNods);
+F = zeros(numNods, 1);
+Q = zeros(numNods, 1);
+u = zeros(numNods, 1);
+
+for e = 1:numElem
+    rows = [elem(e,1), elem(e,2)];
+    cols = rows;
+    
+    x1 = nodes(rows(1));
+    x2 = nodes(rows(2));
+    
+    %Càlcul de Ke
+    Ke = (alpha * 0.5 * (x1 + x2) + beta) * [1 , -1; -1, 1] / h; 
+
+    %Càlcul de Fe
+    Fe = (a*[2*x1 + x2; x1 + 2*x2] + 3*b*[1; 1]) * h/ 6;
+
+    K(rows, cols) = K(rows, cols) + Ke;
+    F(rows) = F(rows) + Fe;     
+    %[K, F]
+end
+
+%Boundary Conditions (B.C.)
+fixedNods = 1;
+freeNods = setdiff(1:numNods,fixedNods);
+
+%Natural B.C.
+Q(3) = -2.0*P;
+Q(4) = -R*0.25;
+
+%Essential B.C.
+u(1) = 0.0;
+
+%Reduced system
+Km = K(freeNods,freeNods);
+Fm = F(freeNods) + Q(freeNods) ...
+    - K(freeNods,fixedNods)*u(fixedNods);
+
+%Solve the reduced system
+um = Km \ Fm;
+u(freeNods) = um;
+
+%Post Process: reaction forces
+Q = K * u - F;
+
+%Output
+%fprintf("%7s%7s%13s\n","nodPos","U","Q")
+%fprintf("%7.3f%12.4e%12.2e\n",[nodes, u, Q]')
+
+fprintf("%7s%8s%12s\n","nodPos","U","Q")
+fprintf("%7.3f%13.4e%12.2e\n",[nodes, u, Q]')
+
+
